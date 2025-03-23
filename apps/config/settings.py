@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'apps.appointments',
     'apps.services',
     'apps.pets',
+    'apps.schedules',
+    'apps.communications',
     
 ]
 
@@ -115,7 +117,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'config.wsgi.application'
+WSGI_APPLICATION = 'apps.config.wsgi.application'
 
 
 # Database

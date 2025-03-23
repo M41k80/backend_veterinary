@@ -27,4 +27,7 @@ urlpatterns += [
     path('api/', include('apps.services.urls')),
     path('api/', include('apps.dashboard.urls')),
     path('api/', include('apps.pets.urls')),
+    path('api/', include('apps.users.urls')),
+    path('api/', include('apps.schedules.urls')),
+    path('api/', include('apps.communications.urls')),
 ]
