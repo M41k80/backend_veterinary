@@ -30,4 +30,5 @@ urlpatterns += [
     path('api/', include('apps.users.urls')),
     path('api/', include('apps.schedules.urls')),
     path('api/', include('apps.communications.urls')),
+    path('api/', include('apps.medicalRecord.urls')),
 ]

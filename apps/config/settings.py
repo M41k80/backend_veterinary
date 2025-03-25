@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 from pathlib import Path
 import os
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -47,8 +48,15 @@ INSTALLED_APPS = [
     'apps.pets',
     'apps.schedules',
     'apps.communications',
+    'apps.medicalRecord',
+    'apps.store',
+    'django_celery_beat',
+    'channels',
+    'channels_redis',
+    
     
 ]
+
 
 
 
@@ -118,6 +126,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'apps.config.wsgi.application'
+ASGI_APPLICATION = 'apps.config.asgi.application'
 
 
 # Database
@@ -171,3 +180,35 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+CELERY_BROKER_URL = 'redis-16410.c8.us-east-1-4.ec2.redns.redis-cloud.com:16410'  
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_BACKEND = 'redis-16410.c8.us-east-1-4.ec2.redns.redis-cloud.com:16410'
+
+CELERY_BEAT_SCHEDULE = {
+    'check-vaccine-reminders': {
+        'task': 'apps.medicalRecord.tasks.check_vaccine_reminders',
+        'schedule': timedelta(days=30),  
+    },
+    'send-appointment-reminders': {
+        'task': 'apps.appointment.tasks.send_appointment_reminders',
+        'schedule': timedelta(days=30),  
+    },
+}
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'vetclinicapiv1@gmail.com'  
+EMAIL_HOST_PASSWORD = 'Testapi#1234'  
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}

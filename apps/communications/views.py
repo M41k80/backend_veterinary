@@ -15,4 +15,12 @@ class MessageViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         
-        serializer.save(sender=self.request.user)
+        message = serializer.save(sender=self.request.user)
+        
+        
+        send_mail(
+            subject='New message from you from a pet owner',
+            message=f'Hello, a new message from {message.sender.username} has been sent to you. the content is: {message.content}',
+            from_email='vetclinicapiv1@gmail.com',
+            recipient_list=[message.receiver.email],
+        )

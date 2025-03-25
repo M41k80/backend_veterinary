@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 from apps.users.models import User
+import datetime
+
 
 class Appointment(models.Model):
     pet = models.ForeignKey('pets.Pet', on_delete=models.CASCADE, related_name='appointments')
@@ -12,10 +14,12 @@ class Appointment(models.Model):
     status = models.CharField(max_length=20, choices=[('pending', 'Pending'), ('confirmed', 'Confirmed'),('completed', 'Completed'), ('cancelled', 'Cancelled'), ('rescheduled', 'Rescheduled')], default='pending')
     services = models.ManyToManyField('services.Service', related_name='appointments')
     total_cost = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    
+    reminder_date = models.DateTimeField(blank=True, null=True)
+    reminder_sent = models.BooleanField(default=False) 
     
     def save(self, *args, **kwargs):
-        self.end_time = self.start_time + datetime.timedelta(minutes=30)
+        if not self.end_time:
+            self.end_time = self.start_time + datetime.timedelta(minutes=30)
         
         if not self.schedule.is_available:
             raise ValueError("Selected schedule is not available.")
@@ -31,6 +35,9 @@ class Appointment(models.Model):
         
         self.schedule.is_available = False
         self.schedule.save()
+        
+        self.reminder_date = self.start_time - datetime.timedelta(days=1)
+        
 
         super().save(*args, **kwargs)
     

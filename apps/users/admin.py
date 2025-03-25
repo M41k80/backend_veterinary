@@ -2,6 +2,8 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from .models import User
 
+
+
 class CustomUserAdmin(UserAdmin):
     # Campos que se mostrarán en el formulario de creación de usuarios
     add_fieldsets = (
