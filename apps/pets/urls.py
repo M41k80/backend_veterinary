@@ -6,5 +6,5 @@ router = DefaultRouter()
 router.register(r'pets', PetViewSet)
 
 urlpatterns = [
-    path('api/pets/', include(router.urls)),
+    path('', include(router.urls)),
 ]

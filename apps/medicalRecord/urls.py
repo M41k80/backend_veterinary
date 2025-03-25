@@ -6,5 +6,5 @@ router = DefaultRouter()
 router.register(r'medical_records', MedicalRecordView, basename='medical_record')
 
 urlpatterns = [
-    path('api/medical_records/', include(router.urls)),
+    path('', include(router.urls)),
 ]

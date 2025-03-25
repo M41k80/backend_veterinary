@@ -6,5 +6,5 @@ router = DefaultRouter()
 router.register(r'appointments', AppointmentViewSet)
 
 urlpatterns = [
-    path('api/appointments/', include(router.urls)),
+    path('', include(router.urls)),
 ]

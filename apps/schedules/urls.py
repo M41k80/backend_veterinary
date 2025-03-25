@@ -8,5 +8,5 @@ router.register(r'schedules', ScheduleViewSet)
 router.register(r'appointments', AppointmentViewSet)
 
 urlpatterns = [
-    path('api/schedules/', include(router.urls)),
+    path('', include(router.urls)),
 ]
