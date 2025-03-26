@@ -16,6 +16,25 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from drf_yasg.views import get_schema_view
+from drf_yasg import openapi
+from rest_framework import permissions
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+
+
+
+schema_view = get_schema_view(
+    openapi.Info(
+        title="Veterinary API",
+        default_version='v1',
+        description="Documentación de la API del sistema de la veterinaria",
+        terms_of_service="https://www.google.com/policies/terms/",
+        contact=openapi.Contact(email="vetclinicapiv1@gmail.com"),
+        license=openapi.License(name="MIT License"),
+    ),
+    public=True,
+    permission_classes=(permissions.AllowAny,),
+)
 
 
 urlpatterns = [
@@ -33,4 +52,12 @@ urlpatterns += [
     path('api/', include('apps.medicalRecord.urls')),
     path('api/', include('apps.store.urls')),
     path('api/', include('apps.reviews.urls')),
+    path('swagger/', schema_view.with_ui('swagger', cache_timeout=0),
+         name='schema-swagger-ui'),
+    path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+
 ]
+
+

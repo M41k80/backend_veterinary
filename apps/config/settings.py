@@ -49,6 +49,8 @@ INSTALLED_APPS = [
     'channels',
     'channels_redis',
     'push_notifications',
+    'drf_spectacular',
+    'drf_yasg',
     
     
 ]
@@ -73,6 +75,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticated',
     ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 
